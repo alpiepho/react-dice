@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/react-dice/static/css/main.8d65c69f.chunk.css",
-    "main.js": "/react-dice/static/js/main.1bbf859b.chunk.js",
-    "main.js.map": "/react-dice/static/js/main.1bbf859b.chunk.js.map",
+    "main.css": "/react-dice/static/css/main.d76341a6.chunk.css",
+    "main.js": "/react-dice/static/js/main.42507560.chunk.js",
+    "main.js.map": "/react-dice/static/js/main.42507560.chunk.js.map",
     "runtime~main.js": "/react-dice/static/js/runtime~main.9b5673c1.js",
     "runtime~main.js.map": "/react-dice/static/js/runtime~main.9b5673c1.js.map",
     "static/js/2.d42b6f0b.chunk.js": "/react-dice/static/js/2.d42b6f0b.chunk.js",
     "static/js/2.d42b6f0b.chunk.js.map": "/react-dice/static/js/2.d42b6f0b.chunk.js.map",
     "index.html": "/react-dice/index.html",
-    "precache-manifest.330fd85756e611388a6bca994fa5bd18.js": "/react-dice/precache-manifest.330fd85756e611388a6bca994fa5bd18.js",
+    "precache-manifest.1391aa1c2a9f03c32a5d58cfe2b46cb2.js": "/react-dice/precache-manifest.1391aa1c2a9f03c32a5d58cfe2b46cb2.js",
     "service-worker.js": "/react-dice/service-worker.js",
-    "static/css/main.8d65c69f.chunk.css.map": "/react-dice/static/css/main.8d65c69f.chunk.css.map"
+    "static/css/main.d76341a6.chunk.css.map": "/react-dice/static/css/main.d76341a6.chunk.css.map"
   }
 }

@@ -1,23 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
+
+  const firstDieImage = require(`./assets/1.png`);
+  const secondDieImage = require(`./assets/2.png`);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <div style={{ display: 'flex', margin: 20 }}>
+          <img src={firstDieImage} className="die" alt="Die one" />
+          <img src={secondDieImage} className="die" alt="Die two" />
+        </div>
+        <span>8</span>
+        <button className="button">Roll</button>
       </header>
     </div>
   );

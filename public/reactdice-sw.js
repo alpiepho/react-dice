@@ -5,19 +5,7 @@ const CACHE_NAME = 'static-cache-v1';
 
 // CODELAB: Add list of files to cache here.
 const FILES_TO_CACHE = [
-  'offline.html',
-  'assets/balloon_128x128.png',
-  'images/balloon_144x144.png',
-  'images/balloon_152x152.png',
-  'images/balloon_192x192.png',
-  'images/balloon_256x256.png',
-  'images/balloon_500x500.png',
-  'assets/1.png',
-  'assets/2.png',
-  'assets/3.png',
-  'assets/4.png',
-  'assets/5.png',
-  'assets/6.png'
+  'offline.html'
 ];
 
 self.addEventListener('install', (evt) => {
@@ -45,7 +33,10 @@ self.addEventListener('fetch', (evt) => {
 
 });
 
-
+self.addEventListener('push', function(event) {
+  console.log('[Service Worker] Push Received.');
+  console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+});
 
 
 // This is the "Offline page" service worker

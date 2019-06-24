@@ -22,8 +22,9 @@ function App() {
           rel="noopener noreferrer"
           href="https://github.com/alpiepho/react-dice"
           target="_blank"
+          aria-label="github"
         >
-        <i className="fa fa-github" aria-hidden="true" />
+        <i className="fa fa-github" aria-hidden="true" aria-hidden="true" />
         </a>        
         </h3>
 

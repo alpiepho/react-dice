@@ -100,8 +100,3 @@ self.addEventListener("refreshOffline", function () {
     });
   });
 });
-
-self.addEventListener('push', function(event) {
-  console.log('[React-Dice] Push Received.');
-  console.log(`[React-Dice] Push had this data: "${event.data.text()}"`);
-});

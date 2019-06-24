@@ -33,7 +33,10 @@ self.addEventListener('fetch', (evt) => {
 
 });
 
-
+self.addEventListener('push', function(event) {
+  console.log('[Service Worker] Push Received.');
+  console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+});
 
 
 // This is the "Offline page" service worker
@@ -96,4 +99,9 @@ self.addEventListener("refreshOffline", function () {
       return cache.put(offlinePageRequest, response);
     });
   });
+});
+
+self.addEventListener('push', function(event) {
+  console.log('[React-Dice] Push Received.');
+  console.log(`[React-Dice] Push had this data: "${event.data.text()}"`);
 });

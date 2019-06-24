@@ -5,13 +5,7 @@ const CACHE_NAME = 'static-cache-v1';
 
 // CODELAB: Add list of files to cache here.
 const FILES_TO_CACHE = [
-  'offline.html',
-  'assets/1.png',
-  'assets/2.png',
-  'assets/3.png',
-  'assets/4.png',
-  'assets/5.png',
-  'assets/6.png'
+  'offline.html'
 ];
 
 self.addEventListener('install', (evt) => {
@@ -21,8 +15,6 @@ self.addEventListener('install', (evt) => {
     caches.open(CACHE_NAME).then((cache) => {
       console.log('[ServiceWorker] Pre-caching offline page');
       return cache.addAll(FILES_TO_CACHE);
-    }).catch(function(err) {
-      console.log(err);
     })
   );
   self.skipWaiting();

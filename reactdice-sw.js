@@ -1,102 +1,67 @@
-'use strict';
+// This is the "Offline copy of pages" service worker
 
-// CODELAB: Update cache names any time any of the cached files change.
-const CACHE_NAME = 'static-cache-v1';
+const CACHE = "pwabuilder-offline";
 
-// CODELAB: Add list of files to cache here.
-const FILES_TO_CACHE = [
-  'offline.html'
-];
+// TODO: replace the following with the correct offline fallback page i.e.: 
+const offlineFallbackPage = "index.html";
 
-self.addEventListener('install', (evt) => {
-  console.log('[ServiceWorker] Install');
-  // CODELAB: Precache static resources here.
-  evt.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('[ServiceWorker] Pre-caching offline page');
-      return cache.addAll(FILES_TO_CACHE);
-    })
-  );
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', (evt) => {
-  console.log('[ServiceWorker] Activate');
-  // CODELAB: Remove previous cached data from disk.
-
-  self.clients.claim();
-});
-
-self.addEventListener('fetch', (evt) => {
-  console.log('[ServiceWorker] Fetch', evt.request.url);
-  // CODELAB: Add fetch event handler here.
-
-});
-
-self.addEventListener('push', function(event) {
-  console.log('[Service Worker] Push Received.');
-  console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
-});
-
-
-// This is the "Offline page" service worker
-
-const CACHE = "reactdice-page";
 const offlineFallbackPage = "offline.html";
 
-// Install stage sets up the offline page in the cache and opens a new cache
+// Install stage sets up the index page (home page) in the cache and opens a new cache
 self.addEventListener("install", function (event) {
   console.log("[React-Dice] Install Event processing");
 
   event.waitUntil(
-    caches.open(CACHE_NAME).then(function (cache) {
-      console.log('[React-Dice] Pre-caching offline page');
-      return cache.addAll(FILES_TO_CACHE);
+    caches.open(CACHE).then(function (cache) {
+      console.log("[React-Dice] Cached offline page during install");
+
+      if (offlineFallbackPage === "offline.html") {
+        return cache.add(new Response("[React-Dice] Cached offline page during install."));
+      }
+      
+      return cache.add(offlineFallbackPage);
     })
-
-    // caches.open(CACHE).then(function (cache) {
-    //   console.log("[React-Dice] Cached offline page during install");
-
-    //   if (offlineFallbackPage === "offline.html") {
-    //     return cache.add(new Response("Update the value of the offlineFallbackPage constant in the serviceworker."));
-    //   }
-
-    //   return cache.add(offlineFallbackPage);
-    // })
   );
-  self.skipWaiting();
 });
 
-// If any fetch fails, it will show the offline page.
+// If any fetch fails, it will look for the request in the cache and serve it from there first
 self.addEventListener("fetch", function (event) {
   if (event.request.method !== "GET") return;
 
   event.respondWith(
-    fetch(event.request).catch(function (error) {
-      // The following validates that the request was for a navigation to a new document
-      if (
-        event.request.destination !== "document" ||
-        event.request.mode !== "navigate"
-      ) {
-        return;
-      }
+    fetch(event.request)
+      .then(function (response) {
+        console.log("[React-Dice] add page to offline cache: " + response.url);
 
-      console.error("[React-Dice] Network request Failed. Serving offline page " + error);
-      return caches.open(CACHE).then(function (cache) {
-        return cache.match(offlineFallbackPage);
-      });
-    })
+        // If request was success, add or update it in the cache
+        event.waitUntil(updateCache(event.request, response.clone()));
+
+        return response;
+      })
+      .catch(function (error) {        
+        console.log("[React-Dice] Network request Failed. Serving content from cache: " + error);
+        return fromCache(event.request);
+      })
   );
 });
 
-// This is an event that can be fired from your page to tell the SW to update the offline page
-self.addEventListener("refreshOffline", function () {
-  const offlinePageRequest = new Request(offlineFallbackPage);
+function fromCache(request) {
+  // Check to see if you have it in the cache
+  // Return response
+  // If not in the cache, then return error page
+  return caches.open(CACHE).then(function (cache) {
+    return cache.match(request).then(function (matching) {
+      if (!matching || matching.status === 404) {
+        return Promise.reject("no-match");
+      }
 
-  return fetch(offlineFallbackPage).then(function (response) {
-    return caches.open(CACHE).then(function (cache) {
-      console.log("[React-Dice] Offline page updated from refreshOffline event: " + response.url);
-      return cache.put(offlinePageRequest, response);
+      return matching;
     });
   });
-});
+}
+
+function updateCache(request, response) {
+  return caches.open(CACHE).then(function (cache) {
+    return cache.put(request, response);
+  });
+}

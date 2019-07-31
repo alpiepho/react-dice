@@ -33,11 +33,27 @@ self.addEventListener('fetch', (evt) => {
 
 });
 
-self.addEventListener('push', function(event) {
-  console.log('[Service Worker] Push Received.');
-  console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
-});
+// self.addEventListener('push', function(event) {
+//   console.log('[Service Worker] Push Received.');
+//   console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+// });
 
+// from https://flaviocopes.com/service-workers/
+// NOTE: still doesnt pass pwabuilder.com test for pushManager :(
+self.addEventListener('push', (event) => {
+  console.log('Received a push event', event)
+
+  const options = {
+    title: 'I got a message for you!',
+    body: 'Here is the body of the message',
+    //icon: '/img/icon-192x192.png',
+    tag: 'tag-for-this-notification',
+  }
+
+  event.waitUntil(
+    self.registration.showNotification(title, options)
+  )
+})
 
 // This is the "Offline page" service worker
 
